@@ -1,1 +1,8 @@
-<p>posts works!</p>
+<div class="posts-container">
+  <div class="post" *ngFor="let post of posts">
+    <h3 class="post-title">{{post.title}}</h3>
+    <p class="post-body">{{post.body}}</p>
+  </div>
+  <span *ngIf="!posts || isLoading" class="posts-loading">Загрузка постов...</span>
+  <span *ngIf="posts && posts.length === 0" class="posts-notFound">Постов пока что нет.</span>
+</div>

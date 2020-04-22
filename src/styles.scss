@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import "~bootstrap-css-only/css/bootstrap-grid.min.css";
+
+.app {
+  &-layout {
+    min-height: 100%;
+  }
+}
