@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {Post} from '../../interfaces';
 import {PostsService} from '../../posts.service';
 
@@ -14,6 +14,8 @@ export class PostsComponent implements OnInit {
   // у меня не работает пагинация с 10 (сервер не отвечает), поэтому установил 5
   limit = 5;
   isLoading = false;
+
+  @ViewChild('postsContainer', {static: true}) postsContainer: ElementRef;
 
   @HostListener('window:scroll', ['$event'])
   onScroll(event) {
@@ -35,6 +37,11 @@ export class PostsComponent implements OnInit {
     this.loadNewPosts();
   }
 
+  // проверка на скролл, если посты загрузились при инициализации и скролл не появился - true
+  needNewPosts() {
+    return this.postsContainer.nativeElement.offsetHeight < window.innerHeight;
+  }
+
   loadNewPosts() {
     if (!this.isLoading) {
       this.isLoading = true;
@@ -47,6 +54,10 @@ export class PostsComponent implements OnInit {
 
         this.page = this.page + 1;
         this.isLoading = false;
+        // загружаем посты ещё если скролла нет
+        if (this.needNewPosts()) {
+          this.loadNewPosts();
+        }
       }, error => {
         this.isLoading = false;
       });
